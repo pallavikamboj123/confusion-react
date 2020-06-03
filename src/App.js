@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+//import logo from './logo.svg';
+import { Navbar, NavbarBrand } from 'reactstrap';
+import Menu from './components/menuComponent';
 import './App.css';
+import {DISHES} from './shared/dishes';
 
-function App() {
+
+
+class App extends Component{
+
+
+constructor(props){
+  super(props);
+
+  this.state = {
+    dishes : DISHES
+  }
+}
+
+render(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+        <Navbar dark color="primary">
+          <div className="container">
+            <NavbarBrand href="/">navbarbrand</NavbarBrand>
+          </div>
+        </Navbar>
+
+        {/* app is parentComponent and menu is child component and 
+        here we have moved our dishes state from parent 
+        to child component  and we are passing it in props 
+        so that it will be available to all
+        the child components */}
+        <Menu  dishes = {this.state.dishes}/> 
     </div>
   );
 }
+
+}
+
 
 export default App;
