@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
+
 import Menu from './menuComponent';
 import {DISHES} from '../shared/dishes';
 import Dishdetail from './dishDetailComponent';
-
+import Header from './headerComponent'
+import Footer from './footerComponent';
 
 class Main extends Component{
 
@@ -27,15 +28,11 @@ onDishSelect(dishId){
 render(){
   return (
     <div>
-        <Navbar dark color="primary">
-          <div className="container">
-            <NavbarBrand href="/">navbarbrand</NavbarBrand>
-          </div>
-        </Navbar>
-
+        <Header />
         <Menu  dishes = {this.state.dishes} onClick={(dishId) => this.onDishSelect(dishId)}/> 
         {/* filter function gives the subarray of main array */}
         <Dishdetail selectedDish = {this.state.dishes.filter((dish)=>dish.id === this.state.selectedDish)[0]} />
+        <Footer />
     </div>
   );
 }
