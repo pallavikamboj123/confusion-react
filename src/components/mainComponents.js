@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import HomePage from './homeComponent';
 import Menu from './menuComponent';
+import Contact from './contactComponent';
 import {DISHES} from '../shared/dishes';
+import {  COMMENTS} from '../shared/comments';
+import {LEADERS} from '../shared/leaders';
+import {PROMOTIONS} from '../shared/promotions';
 import Dishdetail from './dishDetailComponent';
 import Header from './headerComponent'
 import Footer from './footerComponent';
@@ -15,6 +19,9 @@ constructor(props){
 
   this.state = {
     dishes : DISHES,
+    comments: COMMENTS,
+    promotions: PROMOTIONS,
+    leaders: LEADERS
     // selectedDish : null
   }
 }
@@ -30,7 +37,12 @@ render(){
 
   const Home = ()=>{
     return(
-      <HomePage />
+      <HomePage 
+      dish={this.state.dishes.filter((dish)=> dish.featured)[0]}
+      promption={this.state.promotions.filter((promo)=> promo.featured)[0]}
+      leader={this.state.leaders.filter((leader)=> leader.featured)[0]}
+      
+      />
     );
   }
 
@@ -47,7 +59,7 @@ render(){
             {/* if we need to pass props then use inline function 
             syntax for passing the component */}
             <Route exact path="/menu" component={()=> <Menu dishes = {this.state.dishes}/>}/>
-            
+            <Route exact path="/contactus" component = {Contact} />
             {/* default url */}
             <Redirect to="/home" /> 
           </Switch>
