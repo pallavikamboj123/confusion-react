@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardImg,  CardText, CardBody, CardTitle } from 'reactstrap';
-
+import { Card, CardImg,  CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 
         function RenderDish( { dish } ){
@@ -21,17 +21,17 @@ import { Card, CardImg,  CardText, CardBody, CardTitle } from 'reactstrap';
                 );
             }
             else{
-                console.log("inside else");
+                
                 return (
                     <div></div>
                 );
             }
         }
 
-        function RenderComments({ dish } ){
-            if(dish != null){
-                const comment = dish.comments;
-                // console.log("dish is ", dish.name);
+        function RenderComments({ comment} ){
+            console.log("comments are ",comment);
+            if(comment!= null){
+                               
               var options = {year: 'numeric' , month: 'short', day:'2-digit'};
                const comments = comment.map((comment)=>{
                   // const date = comment.date;
@@ -43,9 +43,15 @@ import { Card, CardImg,  CardText, CardBody, CardTitle } from 'reactstrap';
                   </p>
                    );
                });
-               return comments;
+               return (
+                   <div className="col-12 col-md-5 m-1">
+                       <h3>Comments</h3>
+                        {comments}
+                   </div>
+               );
             }
             else{
+                console.log("no comments");
                 return(
                     <div></div>
                 );
@@ -57,14 +63,22 @@ import { Card, CardImg,  CardText, CardBody, CardTitle } from 'reactstrap';
         return (
             <div className="container">
                 <div className="row">
-                   
-                        <RenderDish dish = {props.selectedDish} />
-                   
-                    
-                    <div className="col-12 col-md-5 m-1">
+                    <Breadcrumb>
                         
-                        <RenderComments dish = {props.selectedDish}  />
+                        <BreadcrumbItem>
+                            <Link to='/menu'>Menu</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{props.dish.name}</h3>
+                        <hr />
                     </div>
+                </div>
+                <div className="row">
+                   <RenderDish dish = {props.dish} />
+                   <RenderComments comment = {props.comments}  />
+                   
                 </div>
             </div>
             
