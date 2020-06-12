@@ -25,7 +25,7 @@ class Contact extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
        // this.handleBlur = this.handleBlur(this);
     }
-// invoke anychange to the any inout value
+
     handleInputChange(event){
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -41,16 +41,12 @@ class Contact extends Component {
         alert("current state is: "+ JSON.stringify(this.state));
         event.preventDefault();
     }
-    handleBlur = evt => field => {
+   
+    handleBlur = (field) => (evt) => {
         this.setState({
-        touched: { ...this.state.touched, [field]: true }
-    })
+            touched: {...this.state.touched, [field] : true}
+        });
     }
-    // handleBlur = (field) => (evt) => {
-    //     this.setState({
-    //         touched: {...this.state.touched, [field] : true}
-    //     });
-    // }
 
     validate(firstname, lastname, telnum, email){
         const errors = {

@@ -3,14 +3,23 @@ import HomePage from './homeComponent';
 import Menu from './menuComponent';
 import Contact from './contactComponent';
 import About from './aboutComponent';
-import {DISHES} from '../shared/dishes';
-import {  COMMENTS} from '../shared/comments';
-import {LEADERS} from '../shared/leaders';
-import {PROMOTIONS} from '../shared/promotions';
 import Dishdetail from './dishDetailComponent';
 import Header from './headerComponent'
 import Footer from './footerComponent';
-import {Switch, Route, Redirect} from 'react-router';
+import {Switch, Route, Redirect, withRouter} from 'react-router';
+import {connect} from 'react-redux';
+
+// state is available from redux store
+// as we have connected our react app to redux
+const mapSateToProps = state =>{
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders
+  }  
+}
+
 
 class Main extends Component{
 
@@ -18,14 +27,8 @@ class Main extends Component{
 constructor(props){
   super(props);
 
-  this.state = {
-    dishes : DISHES,
-    comments: COMMENTS,
-    promotions: PROMOTIONS,
-    leaders: LEADERS
-    // selectedDish : null
-  }
 }
+
 
   
 // onDishSelect(dishId){
@@ -39,16 +42,16 @@ render(){
   const Home = ()=>{
     return(
       <HomePage 
-        dish = {this.state.dishes.filter((dish) => dish.featured)[0]}
-        promotion  = {this.state.promotions.filter((promo) => promo.featured)[0]}
-        leader = {this.state.leaders.filter((leader) => leader.featured)[0]}
+        dish = {this.props.dishes.filter((dish) => dish.featured)[0]}
+        promotion  = {this.props.promotions.filter((promo) => promo.featured)[0]}
+        leader = {this.props.leaders.filter((leader) => leader.featured)[0]}
       />
     );
   }
       const DishWithId = ({match}) =>{
         return (
-          <Dishdetail dish={this.state.dishes.filter( (dish) => dish.id === parseInt(match.params.dishId , 10))[0]}
-            comments = {this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId , 10))}
+          <Dishdetail dish={this.props.dishes.filter( (dish) => dish.id === parseInt(match.params.dishId , 10))[0]}
+            comments = {this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId , 10))}
           />
           
         );
@@ -56,7 +59,7 @@ render(){
 
       const AboutComponent = ()=>{
         return (
-          <About leaders={this.state.leaders}/>
+          <About leaders={this.props.leaders}/>
         );
       }
 
@@ -72,7 +75,7 @@ render(){
 
             {/* if we need to pass props then use inline function 
             syntax for passing the component */}
-            <Route exact path="/menu" component={()=> <Menu dishes = {this.state.dishes}/>}/>
+            <Route exact path="/menu" component={()=> <Menu dishes = {this.props.dishes}/>}/>
             <Route path="/menu/:dishId" component={DishWithId} />
             <Route exact path="/contactus" component = {Contact} />
             <Route exact path="/aboutus" component = {AboutComponent} />
@@ -93,5 +96,6 @@ render(){
 
 }
 
-
-export default Main;
+// connected component to react rrdux
+// take state from store and map it with props
+export default withRouter(connect(mapSateToProps)(Main));
