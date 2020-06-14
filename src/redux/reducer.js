@@ -15,7 +15,11 @@ export const initialState = {
 };
 
 // pure function (part of store)
+// returns a new state (old state  + action)
 export const Reducer = (state = initialState,action)=>{
     return state; //not modified state yet bc no action is introduced yet
 };
+
+
+// reducer should return something
 

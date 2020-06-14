@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 
 // state is available from redux store
 // as we have connected our react app to redux
-const mapSateToProps = state =>{
+const mapStateToProps = state =>{
   return {
     dishes: state.dishes,
     comments: state.comments,
@@ -98,4 +98,4 @@ render(){
 
 // connected component to react rrdux
 // take state from store and map it with props
-export default withRouter(connect(mapSateToProps)(Main));
+export default withRouter(connect(mapStateToProps)(Main));
