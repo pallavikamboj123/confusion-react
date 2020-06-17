@@ -8,10 +8,15 @@ import Header from './headerComponent'
 import Footer from './footerComponent';
 import {Switch, Route, Redirect, withRouter} from 'react-router';
 import {connect} from 'react-redux';
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchDishes } from '../redux/ActionCreators';
 
 // state is available from redux store
 // as we have connected our react app to redux
+
+
+// returns either object or another function
+// invoke each time store will updated
+// returned object is merged with props
 const mapStateToProps = state =>{
   return {
     dishes: state.dishes,
@@ -21,8 +26,13 @@ const mapStateToProps = state =>{
   }  
 }
 
+// this can be an object or a func
+// can return either object or func
 const mapDispatchToProps = (dispatch) => ({
-  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating,author, comment))
+  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating,author, comment)),
+  fetchDishes: ()=>{dispatch(fetchDishes)}
+
+  
 });
 
 class Main extends Component{
@@ -33,7 +43,9 @@ constructor(props){
 
 }
 
-
+componentDidMount() {
+  this.props.fetchDishes();
+}
   
 // onDishSelect(dishId){
 //     this.setState({

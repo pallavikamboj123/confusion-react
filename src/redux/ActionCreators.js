@@ -1,5 +1,5 @@
 import * as ActionTypes from './ActionTypes';
-
+import {DISHES} from '../shared/dishes';
 // every action returns a plain js object
 // each action takes two things:- type and payload
 // payload contains data regarding that action
@@ -14,3 +14,27 @@ export const addComment = (dishId, rating, author, comment) => ({
     }
 });
 
+// fetchDishes is a thunk as it is returning a fucntion
+// thunk returns a function instead of an action
+export const fetchDishes = ()=> (dispatch) => {
+    dispatch(dishesLoading(true));
+
+    setTimeout(()=> {
+        dispatch(addDishes(DISHES));
+        // pushes dishes into the state in the store
+    } , 2000);
+}
+
+export const dishesLoading = () => ({
+    type: ActionTypes.DISHES_LOADING
+});
+
+export const dishesFailed = (errmess) => ({
+    type: ActionTypes.DISHES_FAILED,
+    payload: errmess
+});
+
+export const addDishes = (dishes) => ({
+    type: ActionTypes.ADD_DISHES,
+    payload: dishes
+});
