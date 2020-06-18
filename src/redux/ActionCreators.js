@@ -16,13 +16,15 @@ export const addComment = (dishId, rating, author, comment) => ({
 
 // fetchDishes is a thunk as it is returning a fucntion
 // thunk returns a function instead of an action
-export const fetchDishes = ()=> (dispatch) => {
+export const fetchDishes = () => (dispatch) => {
+
+    console.log("outside");
     dispatch(dishesLoading(true));
 
-    setTimeout(()=> {
+    setTimeout(() => {
+        console.log("inside");
         dispatch(addDishes(DISHES));
-        // pushes dishes into the state in the store
-    } , 2000);
+    }, 2000);
 }
 
 export const dishesLoading = () => ({

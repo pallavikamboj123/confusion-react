@@ -1,27 +1,23 @@
 
 import * as ActionTypes from './ActionTypes';
-
-
-export const Dishes = (state = {
-        isLoading: true,
-        errMess: null,
-        dishes: []
-    }, action) =>{
-    switch(action.type){
+export const Dishes = (state = { isLoading: true,
+    errMess: null,
+    dishes:[]}, action) => {
+    switch (action.type) {
         case ActionTypes.ADD_DISHES:
-            return  {...state, isLoading: false, errMess: null, dishes: action.payload}
+            return {...state, isLoading: false, errMess: null, dishes: action.payload};
+            //... creates new state set properties according to parameters passes
+              // returns new state
+             // without changing the inital state
 
         case ActionTypes.DISHES_LOADING:
-            return {...state, isLoading: true, errMess: null, dishes: []};
-            
-            //... creates new state set properties according to parameters passes
-            // returns new state
-            // without changing the inital state
+            return {...state, isLoading: true, errMess: null, dishes: []}
 
         case ActionTypes.DISHES_FAILED:
-            return {...state, isLoading: false, errMess: action.payload, dishes: []};
+            return {...state, isLoading: false, errMess: action.payload};
 
         default:
             return state;
     }
-}
+};
+

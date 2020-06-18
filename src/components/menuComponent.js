@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import {Link } from 'react-router-dom';  
-
+import {Loading} from './loadingcomponent';
 
 
 
@@ -23,7 +23,7 @@ import {Link } from 'react-router-dom';
     }
 
     const Menu = (props)=>{
-        const menu = props.dishes.map((dish)=>{
+        const menu = props.dishes.dishes.map((dish)=>{
             return (
 //whenever we are rendering a list of items in react, we need to give an id to each object so that react will be able to recognise each element uniquely
                 <div key={dish.id} className="col-12 col-md-5 m-1">
@@ -31,7 +31,27 @@ import {Link } from 'react-router-dom';
                 </div>
             );
         });
-      
+
+        if(props.dishes.isLoading)
+           {
+               return (
+                   <div className="container">
+                       <div className="row">
+                           <Loading />
+                       </div>
+                   </div>
+               );
+           }
+           else if(props.dishes.errMess){
+            return (
+                <div className="container">
+                    <div className="row">
+                        <h4>{props.dishes.errMess}</h4>
+                    </div>
+                </div>
+            );
+           }
+      else{
         return (
             
             <div className="container">
@@ -56,7 +76,7 @@ import {Link } from 'react-router-dom';
             </div>
         );
     }
-   
+}
 
         
 
