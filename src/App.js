@@ -28,3 +28,7 @@ render(){
 
 
 export default App;
+
+
+// representational state transfer :- REST
+// SOAP:- protocol for communicating between high level entites

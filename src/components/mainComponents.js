@@ -9,7 +9,7 @@ import Footer from './footerComponent';
 import {Switch, Route, Redirect, withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import { addComment, fetchDishes } from '../redux/ActionCreators';
-
+import {actions} from 'react-redux-form';
 // state is available from redux store
 // as we have connected our react app to redux
 
@@ -30,8 +30,10 @@ const mapStateToProps = state =>{
 // can return either object or func
 const mapDispatchToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating,author, comment)),
-  fetchDishes: ()=>{dispatch(fetchDishes())}
-  
+  fetchDishes: ()=>{dispatch(fetchDishes())},
+  // reset:- inbuilt func of actions 
+  // will reset form named feedback
+  resetFeedbackForm: () => {dispatch(actions.reset('feedback'))}
 });
 
 class Main extends Component{
@@ -101,7 +103,7 @@ render(){
             syntax for passing the component */}
             <Route exact path="/menu" component={()=> <Menu dishes = {this.props.dishes}/>}/>
             <Route path="/menu/:dishId" component={DishWithId} />
-            <Route exact path="/contactus" component = {Contact} />
+            <Route exact path="/contactus" component = { () => <Contact resetFeedbackForm = {this.props.resetFeedbackForm}/>} />
             <Route exact path="/aboutus" component = {AboutComponent} />
             {/* default url */}
             <Redirect to="/home" /> 
