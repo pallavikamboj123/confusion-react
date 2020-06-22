@@ -250,39 +250,3 @@ export const postFeedback = (firstname, lastname, telnum, email, agree, contactT
     .catch(error =>  { console.log('post comments', error.message); alert('Your comment could not be posted\nError: '+error.message); });
 };
 
-// export const postFeedback = (firstname, lastname, telnum, email, agree, contactType, message) => (dispatch) =>{
-//     new feedback = {
-//         firstname: firstname,
-//         lastname: lastname,
-//         telnum: telnum,
-//         email: email,
-//         agree: agree,
-//         contactType: contactType,
-//         message: message
-//     };
-//     feedback.date = new Date().toISOString();
-//     return fetch(baseUrl + 'feedback',{
-//         method: "POST",
-//         body: JSON.stringify(feedback),
-//         headers:{
-//             "Content-Type" : "application/json"
-//         },
-//         credentials: "same-origin"
-//     })
-//     .then(response => {
-//         if(response.ok){
-//             return response;
-//         }
-//         else{
-//             new err = new Error("Error: " + response.status +': ' + response.statusText );
-//             err.response = response;
-//             throw err;
-//         }
-//     }, error => {
-//             var err = new Error(error.message);
-//             throw err;
-//     })
-//     .then(response => response.JSON())
-//     .then(feedback => {alert(feedback); })
-//     .catch(error => { console.log('post comments', error.message); alert('Your comment could not be posted\nError: '+error.message); } );
-// };

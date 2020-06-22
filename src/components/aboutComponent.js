@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media, ListGrou
 import { Link } from 'react-router-dom';
 import {baseUrl} from '../shared/baseUrl.js';
 import { Loading } from './loadingcomponent.js';
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 function RenderLeader({leader, isLoading, errMess}){
     return (
@@ -20,21 +21,37 @@ function RenderLeader({leader, isLoading, errMess}){
     
 }
 
-function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
+function Leaders({leaders}){
+    return (
+        <ul className="list-unstyled">
+        <Stagger in>
+            { leaders.map((leader) => {
         return (
-            
+            <Fade in>
            <ListGroup key={leader.id}>
-               <ListGroupItem >
-               <RenderLeader leader= {leader} />
-                </ListGroupItem>
+               
+                    <ListGroupItem >
+                        <RenderLeader leader= {leader} />
+                    </ListGroupItem>
+               
            </ListGroup>
-                
+                </Fade>
            
             
         );
-    });
+    })}
+        </Stagger>
+    </ul>
+    );
+    
+}
+function About(props) {
+// const leaders = () => {
+    
+// }
+    
+    
     if(props.isLoading){
         return (
             <div className="container">
@@ -109,8 +126,8 @@ function About(props) {
                     <h2>Corporate Leadership</h2>
                 </div>
                 <div className="col-12 col-md">
-                   
-                        {leaders}
+                   <Leaders  leaders={props.leaders}/>
+                        {/* {leaders} */}
                    
                 </div>
             </div>
