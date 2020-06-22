@@ -5,6 +5,7 @@ import {Control, LocalForm,Errors} from 'react-redux-form';
 import {Link} from 'react-router-dom';
 import {Loading} from './loadingcomponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger} from 'react-animation-components';
 const required = (val)=> val && val.length;
 const maxLength = (len) => (val)=> !(val) || val.length <= len;
 const minLength = (len) => (val) => (val) && val.length >= len;
@@ -16,6 +17,10 @@ const minLength = (len) => (val) => (val) && val.length >= len;
                  
                 return (
                     <div className="col-12 col-md-5 m-1"> 
+                        <FadeTransform in
+                            transformProps = {{
+                                exitTransform: 'scale(0.5) translateY(-50%)'
+                            }}>
                         <Card>
                             <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
                             <CardBody>
@@ -23,6 +28,7 @@ const minLength = (len) => (val) => (val) && val.length >= len;
                                 <CardText>{dish.description}</CardText>
                             </CardBody>
                         </Card>
+                        </FadeTransform>
                     </div>
                     
                 );
@@ -52,7 +58,8 @@ const minLength = (len) => (val) => (val) && val.length >= len;
 
             handleSubmit(values) {
                 this.toggleModal();
-                this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+                
+                this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
         //         console.log("current state: "+ JSON.stringify(values));
         // alert("current state is: "+ JSON.stringify(values));
             }
@@ -128,28 +135,28 @@ const minLength = (len) => (val) => (val) && val.length >= len;
             }
             }
         
-        function RenderComments({ comment, addComment, dishId} ){
+        function RenderComments({ comment, postComment, dishId} ){
             console.log("comments are ",comment);
             if(comment!= null){
                                
               var options = {year: 'numeric' , month: 'short', day:'2-digit'};
-               const comments = comment.map((comment)=>{
-                  // const date = comment.date;
-                   return (
-                       
-                    <p>
-                        <h6>{comment.comment}</h6>
-                        <small>-- {comment.author}, {new Intl.DateTimeFormat('en-US',options).format(new Date(Date.parse(comment.date)))}</small>
-                  </p>
-                   );
-               });
-               return (
-                   <div className="col-12 col-md-5 m-1">
-                       <h3>Comments</h3>
-                        {comments}
-                        <CommentForm dishId = {dishId} addComment = {addComment}/>
-                   </div>
-               );
+              return(
+                  <ul className="list-unstyled">
+                      <Stagger in>
+                          {comment.map((comment) => {
+                              return (
+                                  <Fade in>
+                                    <li key={comment.id}>
+                                        <p>{comment.comment}</p>
+                                        <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US',options).format(new Date(Date.parse(comment.date)))}</p>
+                                    </li>
+                                  </Fade>
+                              );
+                          })}
+                      </Stagger>
+                      <CommentForm dishId = {dishId} postComment = {postComment}/>
+                  </ul>
+              ); 
             }
             else{
                 console.log("no comments");
@@ -199,7 +206,7 @@ const minLength = (len) => (val) => (val) && val.length >= len;
                 <div className="row">
                    <RenderDish dish = {props.dish} />
                    <RenderComments comment = {props.comments} 
-                    addComment = {props.addComment}
+                    postComment = {props.postComment}
                     dishId = {props.dish.id}
                    />
                    

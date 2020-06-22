@@ -1,13 +1,14 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import {baseUrl} from '../shared/baseUrl.js';
+import { Loading } from './loadingcomponent.js';
 
-
-function RenderLeader({leader}){
+function RenderLeader({leader, isLoading, errMess}){
     return (
     <Media  >
         <Media left >
-        <Media  src= {leader.image} alt={leader.name}></Media>
+        <Media  src= {baseUrl + leader.image} alt={leader.name}></Media>
     </Media>
     <Media body>
         <Media heading> {leader.name}</Media>
@@ -23,6 +24,7 @@ function About(props) {
 
     const leaders = props.leaders.map((leader) => {
         return (
+            
            <ListGroup key={leader.id}>
                <ListGroupItem >
                <RenderLeader leader= {leader} />
@@ -33,7 +35,25 @@ function About(props) {
             
         );
     });
-
+    if(props.isLoading){
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if(props.errMess){
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else{
     return(
         <div className="container">
             <div className="row">
@@ -96,6 +116,7 @@ function About(props) {
             </div>
         </div>
     );
+}
 }
 
 export default About;    

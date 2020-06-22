@@ -8,8 +8,13 @@ import Header from './headerComponent'
 import Footer from './footerComponent';
 import {Switch, Route, Redirect, withRouter} from 'react-router';
 import {connect} from 'react-redux';
-import { addComment, fetchDishes, fetchPromos, fetchComments } from '../redux/ActionCreators';
+import { postFeedback,postComment ,fetchDishes, fetchPromos, fetchComments, fetchLeaders } from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+
+
+
 // state is available from redux store
 // as we have connected our react app to redux
 
@@ -29,10 +34,12 @@ const mapStateToProps = state =>{
 // this can be an object or a func
 // can return either object or func
 const mapDispatchToProps = (dispatch) => ({
-  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating,author, comment)),
+  postFeedback: (firstname, lastname, telnum,email, agree, ContactType, message) => dispatch(postFeedback(firstname, lastname, telnum, email, agree,ContactType, message)),
+  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating,author, comment)),
   fetchDishes: ()=>{dispatch(fetchDishes())},
   fetchComments: ()=>{dispatch(fetchComments())},
   fetchPromos: ()=>{dispatch(fetchPromos())},
+  fetchLeaders: ()=>{dispatch(fetchLeaders())},
   // reset:- inbuilt func of actions 
   // will reset form named feedback
   resetFeedbackForm: () => {dispatch(actions.reset('feedback'))}
@@ -50,6 +57,7 @@ componentDidMount() {
   this.props.fetchDishes();
   this.props.fetchComments();
   this.props.fetchPromos();
+  this.props.fetchLeaders();
 }
 
   
@@ -73,7 +81,12 @@ render(){
         promotion  = {this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
         promosLoading = {this.props.promotions.isLoading}
         promosErrMess = {this.props.promotions.errMess}
-        leader = {this.props.leaders.filter((leader) => leader.featured)[0]}
+        leader  = {this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+        leadersLoading = {this.props.leaders.isLoading}
+        leadersErrMess = {this.props.leaders.errMess}
+        // leader = {this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+        // leadersLoading = {this.props.leaders.isLoading}
+        // leadersErrMess = {this.props.leaders.errMess}
       />
     );
   }
@@ -83,7 +96,7 @@ render(){
             isLoading = {this.props.dishes.isLoading}
             errMess = {this.props.dishes.errMess}  
             comments = {this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId , 10))}
-            addComment= {this.props.addComment}
+            postComment= {this.props.postComment}
             commentsErrMess = {this.props.comments.errMess}
           />
           
@@ -92,7 +105,10 @@ render(){
 
       const AboutComponent = ()=>{
         return (
-          <About leaders={this.props.leaders}/>
+          <About leaders={this.props.leaders.leaders}
+            isLoading = {this.props.leaders.isLoading}
+            errMess = {this.props.leaders.errMess}
+          />
         );
       }
 
@@ -102,6 +118,10 @@ render(){
         <Header />
 
         {/* will switch between the components based on the url we specified */}
+        <TransitionGroup>
+          {/* each component has match, history and location */}
+          <CSSTransition key={this.props.location.key}  classNames="page" timeout={300}>
+          
           <Switch>
             {/* if don't have any props to pass to component  */}
             <Route path="/home" component={Home} />
@@ -110,12 +130,15 @@ render(){
             syntax for passing the component */}
             <Route exact path="/menu" component={()=> <Menu dishes = {this.props.dishes}/>}/>
             <Route path="/menu/:dishId" component={DishWithId} />
-            <Route exact path="/contactus" component = { () => <Contact resetFeedbackForm = {this.props.resetFeedbackForm}/>} />
+            <Route exact path="/contactus" component = { () => <Contact postFeedback = {this.props.postFeedback} resetFeedbackForm = {this.props.resetFeedbackForm}/>} />
             <Route exact path="/aboutus" component = {AboutComponent} />
             {/* default url */}
             <Redirect to="/home" /> 
           </Switch>
 
+          </CSSTransition>
+        </TransitionGroup>
+          
 
 
 
